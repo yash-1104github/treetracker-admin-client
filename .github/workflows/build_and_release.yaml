@@ -4,6 +4,12 @@ on:
   push:
     branches:
       - '**'
+  workflow_dispatch:
+    inputs:
+      run_build:
+        description: 'Run build steps (true/false)'
+        required: false
+        default: 'true'
 
 env:
   project-directory: ./
@@ -79,7 +85,7 @@ jobs:
     runs-on: ubuntu-latest
     needs: prepare
     if: |
-      !contains(github.event.head_commit.message, 'skip-ci') && !contains(needs.prepare.outputs.NO_NEED_TO_BUILD, 'true')
+      !contains(github.event.head_commit.message, 'skip-ci') 
     steps:
       - uses: actions/checkout@v2
       - name: Use Node.js ${{ env.node-version }}
